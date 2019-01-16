@@ -1,0 +1,9 @@
+No module named 'PIL'是因为需要pillow
+
+打开命令行使用pip install Pillow命令安装Pillow
+
+打开命令行使用pip install selenium命令安装selenium
+
+打开命令行使用pip install PyQt5命令安装PyQt5
+
+http://phantomjs.org/download.html
