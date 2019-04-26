@@ -10,7 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 import sys
 
-class Ui_Form(QtWidgets.QWidget):
+class Ui_Form(QtWidgets.QWidget):            #创建窗口类，继承QtWidgets.QWidget
     def __init__(self):
         super(Ui_Form,self).__init__()
         self.url=''
@@ -19,7 +19,7 @@ class Ui_Form(QtWidgets.QWidget):
         self.loaded=False
         self.comic=None
         
-    def setupUi(self, Form):
+    def setupUi(self, Form):                #参数Form，建立UI界面
         Form.setObjectName("Form")
         Form.resize(480, 180)
         Form.setLayoutDirection(QtCore.Qt.LeftToRight)
@@ -137,12 +137,12 @@ class Ui_Form(QtWidgets.QWidget):
         self.comic.download_all_chapters_s(self.parallel)
         
 if __name__ == "__main__":
-    if sys.platform.startswith('win'):
-        freeze_support()#pyinstaller多线程
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
+    if sys.platform.startswith('win'):      #判断操作系统类型
+        freeze_support()#pyinstaller多线程,Win平台要加上这句，避免RuntimeError
+    app = QtWidgets.QApplication(sys.argv)      #每一个PyQt5程序都需要有一个QApplication对象,sys.argv是从命令行传入的参数列表
+    Form = QtWidgets.QWidget()                  #创建基础界面控件(GUI)
+    ui = Ui_Form()                  #创建Ui_Form对象
+    ui.setupUi(Form)                #执行setupUi方法
+    Form.show()                     #显示控件
+    sys.exit(app.exec_())           #消息循环结束之后返回0，接着调用sys.exit(0)退出程序
 

@@ -116,7 +116,7 @@ class Chapter():
         if not self.pages:
             print('No page')
             return None
-        mp=Pool(min(8,max(cpu_count(),4)))
+        mp=Pool(min(8,max(cpu_count(),4)))      #使用进程池multiprocessing.Pool()来管理进程任务
         for page in self.pages:
             results.append(mp.apply_async(self.download_page,(page,)))
         mp.close()
