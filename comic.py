@@ -31,6 +31,7 @@ class Chapter():
     def __init__(self,comic_title,comic_dir,chapter_title,chapter_url):
         self.comic_title,self.comic_dir,self.chapter_title,self.chapter_url=comic_title,comic_dir,chapter_title,chapter_url
         self.chapter_dir=os.path.join(self.comic_dir,validatetitle(self.chapter_title))
+        print(self.comic_dir,'\n',self.chapter_dir)
         if not os.path.exists(self.chapter_dir):
             os.mkdir(self.chapter_dir)
         self.pages=[]
@@ -137,13 +138,13 @@ class Comic():
     def __init__(self,comic_url,comic_title=None,comic_dir=None):
         self.comic_url=comic_url
         n_comic_title,self.des,self.cover,self.chapter_urls=self.get_info()
-        self.chapter_num=len(self.chapter_urls)
-        self.comic_title=(comic_title if comic_title else n_comic_title)
-        self.comic_dir=os.path.abspath((comic_dir if comic_dir else validatetitle(self.comic_title)))
-        if not os.path.exists(self.comic_dir):
+        self.chapter_num=len(self.chapter_urls)         #有几个章节
+        self.comic_title=(comic_title if comic_title else n_comic_title)    #标题,没有传入则自动获取
+        self.comic_dir=os.path.abspath((comic_dir if comic_dir else validatetitle(self.comic_title)))       #路径，没有设置则为标题名
+        if not os.path.exists(self.comic_dir):          #路径是否存在，不存在则在当前路径下创建文件夹
             os.mkdir(self.comic_dir)
         print('There are {n} chapters in comic {c}'.format(n=self.chapter_num,c=self.comic_title))
-        self.chapters={info[0]:Chapter(self.comic_title, self.comic_dir, *info) for info in self.chapter_urls}
+        self.chapters={info[0]:Chapter(self.comic_title, self.comic_dir, *info) for info in self.chapter_urls}      #章节信息
         self.pages=[]
         
     def get_info(self):
@@ -154,22 +155,32 @@ class Comic():
             comic title,description,cover url,chapters' urls
         '''
         headers={'use-agent':"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",'Referer':'http://manhua.dmzj.com/tags/s.shtml'}
-        root='http://manhua.dmzj.com'
+        root='https://manhua.dmzj.com'
+        # <span class="anim_title_text"><a href="../xingqiyidewanwan/"><h1>星期一的丰满</h1></a></span>
         r_title=r'<span class="anim_title_text"><a href=".*?"><h1>(.*?)</h1></a></span>'
+        # <meta name='description' content="星期一的丰满220在线漫画"/>
         r_des=r'<meta name=\'description\' content=".*?(介绍.*?)"/>'#简介正则
+        # <img alt="星期一的丰满" src="https://images.dmzj.com/webpic/3/xingqiyidefengman20181225220806.jpg" id="cover_pic"/></a>
         r_cover=r'src="(.*?)" id="cover_pic"/></a>'#封面url正则
+        # <div class="cartoon_online_border" ><ul>...</ul><div class="clearfix"></div></div>
         r_cb=r'<div class="cartoon_online_border" >([\s\S]*?)<div class="clearfix"></div>'#章节border
+        # <li><a title="星期一的丰满-月曜日Ⅰ" href="/xingqiyidewanwan/49376.shtml" >月曜日Ⅰ</a></li>
         r_cs=r'<li><a title="(.*?)" href="(.*?)" .*?>.*?</a>'#章节链接正则
         try:
             text=requests.get(self.comic_url,headers=headers).text
         except ConnectionError:
             traceback.print_exc()
             raise ConnectionError
-        title=re.findall(r_title,text)[0]
-        cb=re.findall(r_cb,text)[0]
-        chapter_urls=[(c[0],root+c[1]+'#@page=1') for c in re.findall(r_cs,cb)]
-        cover_url=re.findall(r_cover,text)[0]
-        des=re.findall(r_des,text)
+        title=re.findall(r_title,text)[0]       #标题
+        cb=re.findall(r_cb,text)[0]             #章节
+        chapter_urls=[(c[0],root+c[1]+'#@page=1') for c in re.findall(r_cs,cb)]     #章节第一页地址,title,href
+        cover_url=re.findall(r_cover,text)[0]       #封面图片链接
+        des=re.findall(r_des,text)                  #简介
+        print(title)
+        print(cover_url)
+        print(des)
+        for chapter_url in chapter_urls:
+            print(chapter_url) 
         return title,des,cover_url,chapter_urls
     
     def update(self):

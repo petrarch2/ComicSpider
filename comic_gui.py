@@ -62,7 +62,7 @@ class Ui_Form(QtWidgets.QWidget):            #创建窗口类，继承QtWidgets.
         #选择目录按钮
         self.bt_select = QtWidgets.QPushButton(Form)
         self.bt_select.setObjectName("bt_select")
-        self.bt_select.clicked.connect(self.select_dir)
+        self.bt_select.clicked.connect(self.select_dir)#槽
         self.gridLayout.addWidget(self.bt_select, 1, 2, 1, 1)
         #并行按钮
         self.bt_parallel = QtWidgets.QRadioButton(Form)
@@ -87,7 +87,7 @@ class Ui_Form(QtWidgets.QWidget):            #创建窗口类，继承QtWidgets.
         '''
         弹出文件对话框选择保存目录
         '''
-        self.dir=QFileDialog.getExistingDirectory(self,'选择保存路径',(self.dirname if self.dirname else './'))
+        self.dir=QFileDialog.getExistingDirectory(self,'选择保存路径',(self.dir if self.dir else './'))
     
     def loaded_statu(self):
         '''
@@ -106,7 +106,7 @@ class Ui_Form(QtWidgets.QWidget):            #创建窗口类，继承QtWidgets.
             traceback.print_exc()
             return False
         self.loaded=True
-        title,des=self.comic.get_info()[:2]
+        title,des=self.comic.get_info()[:2]     #返回标题和描述
         if self.show:
             self.comic.print_chapters(self.show)
         else:
