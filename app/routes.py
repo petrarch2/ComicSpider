@@ -1,11 +1,14 @@
 from app import app
 #导入模板模块
-from flask import render_template
-from flask import request
+from flask import render_template,request
 
 
 #路由
 @app.route('/')
+def start():
+    return render_template('login.html')
+
+
 @app.route('/index') 
 def index():        #视图函数
     user_agent = request.headers.get('User-Agent')
@@ -18,7 +21,7 @@ def user(name):
     html = '''
     <html>
     <head>
-        <title>Home Page - Microblog</title>
+        <title>Home Page - ComicViewer</title>
     </head>
     <body>
         <h1>Hello, ''' + name + '''!</h1>
@@ -28,8 +31,10 @@ def user(name):
     '''
     return html
 
-@app.route('/user')
-def error():
-    return '<h1>Bad Request</h1>', 400
+@app.errorhandler(404)
+def page_not_found(e):
+    return '<h1>Bad Request</h1>', 404
 
-    
+@app.errorhandler(500)
+def internal_server_error(e):
+    return '<h1>Server Error</h1>', 500

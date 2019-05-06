@@ -1,11 +1,17 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Home Page - ComicViewer</title>
-    </head>
-    <body>
-        <h1>Hello, Delta !</h1>
+<!-- 声明这个模板衍生自 base.html -->
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>Hi, Delta !</h1>
+    {% if user_agent %}
         <p>Your browser is {{ user_agent }}</p>
-    </body>
-</html>
+    {% else %}
+        <p>I don't know Your browser, Hahaha</p>
+    {% endif %}
+{% endblock %}
