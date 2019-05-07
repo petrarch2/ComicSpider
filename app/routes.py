@@ -4,11 +4,17 @@ from flask import render_template,request
 
 
 #路由
-@app.route('/')
-def start():
-    return render_template('login.html')
+@app.route('/', methods=['GET'])
+def home():
+    return render_template('home.html')
 
-
+@app.route('/', methods=['POST'])
+def signin_form():
+    if request.form['username'] == 'admin' and request.form['password'] == 'password':
+        return render_template('index.html')
+    return render_template('home.html')
+    
+    
 @app.route('/index') 
 def index():        #视图函数
     user_agent = request.headers.get('User-Agent')
