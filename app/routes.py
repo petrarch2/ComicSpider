@@ -37,6 +37,15 @@ def user(name):
     '''
     return html
 
+@app.route('/user')
+def com():
+    return render_template('user.html')
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return '<h1>Bad Request</h1>', 404

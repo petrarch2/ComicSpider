@@ -1,0 +1,49 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>Test Print</title>
+</head>
+<script language="javascript">
+ function init(){
+  //document.all.printport.CommPort = "1";
+  //document.all.printport.PortOpen = true;
+                document.all.printport.PortOpen = true;
+ }
+ function doPrint(printmsg){
+
+  //document.all.printport.Output = printmsg;
+   //document.all.printport.Output = "\r\n";
+                document.all.printport.Output = printmsg + "\r\n" + "\r\n" + "\r\n" + "\r\n";
+ }
+ function pageEnd(){
+  document.all.printport.PortOpen = false;
+ }
+</script>
+<body  onload='init();' onunload='pageEnd();'>
+<form method="POST" action="--WEBBOT-SELF--">
+ <p><textarea rows="21" name="S1" cols="86"></textarea></p>
+ <p><input type="button" value="Print" name="B1" onclick='doPrint(document.all.S1.value);'></p>
+ <p><object id="printport" classid="clsid:648A5600-2C6E-101B-82B6-000000000014" style="display:none">
+  <param name="CommPort" value="1">
+  <param name="DTREnable" value="0">
+  <param name="Handshaking" value="0">
+  <param name="InBufferSize" value="1024">
+  <param name="InputLen" value="0">
+  <param name="NullDiscard" value="0">
+  <param name="OutBufferSize" value="512">
+  <param name="ParityReplace" value="63">
+  <param name="RThreshold" value="0">
+  <param name="RTSEnable" value="0">
+  <param name="BaudRate" value="9600">
+  <param name="ParitySetting" value="0">
+  <param name="DataBits" value="8">
+  <param name="StopBits" value="0">
+  <param name="SThreshold" value="0">
+  <param name="EOFEnable" value="0">
+  <param name="InputMode" value="0">
+ </object></p>
+</form>
+</body>
+</html>

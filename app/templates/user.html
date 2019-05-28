@@ -1,0 +1,66 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>Test Print</title>
+</head>
+
+<OBJECT ID="MSComm1" WIDTH=100 HEIGHT=51 type="application/x-oleobject"
+ CLASSID="CLSID:648A5600-2C6E-101B-82B6-000000000014"
+ CODEBASE="MSCOMM32.OCX">
+    <PARAM NAME="_ExtentX" VALUE="2646">
+    <PARAM NAME="_ExtentY" VALUE="1323">
+    <PARAM NAME="_Version" VALUE="393216">
+    <PARAM NAME="DTREnable" VALUE="-1">
+    <PARAM NAME="RThreshold" VALUE="1">
+    <PARAM NAME="RTSEnable" VALUE="-1">
+</OBJECT>
+
+<body  onload='init();' onunload='pageEnd();'>
+<form method="POST" action="--WEBBOT-SELF--">
+ <p><textarea rows="21" name="S1" cols="86"></textarea></p>
+ <p><input type="button" value="Print" name="B1" onclick='doPrint(document.all.S1.value);'></p>
+ <p><script language="javascript">
+  function ConfigPort(){
+	   if(MSComm1.PortOpen==false){
+		   try{
+
+		      MSComm1.CommPort=1;//"1"代表com1口;
+		      MSComm1.Settings="9600,n,8,1";       //定义本属性
+		      MSComm1.OutBufferCount =0;           //清空发送缓冲区
+		      MSComm1.InBufferCount = 0;           //滑空接收缓冲区
+
+		   }catch(ex){
+			   console.log(ex.message);
+		   }
+	   }else{
+		   console.log("请先关闭串口后再设置！");
+	   }
+    }
+
+function OperatePort(){
+	  if(MSComm1.PortOpen==true){
+	      try{
+		  MSComm1.PortOpen=false;
+	      }catch(ex){
+	    	  console.log(ex.message);
+	      }
+	    }else{
+	      try{
+	          MSComm1.PortOpen=true;
+	      }catch(ex){
+	    	  console.log(ex.message);
+	      }
+	  }
+    }
+  </script></p>
+</form>
+</body>
+</html>
+
+
+
+MSComm1.Output="测试发送"; //发送数据
+
+MSComm1.Input="测试接受";  //接受数据
